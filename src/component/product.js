@@ -1,15 +1,16 @@
 import React from "react";
+
 function Product(props) {
   let i=props.index;
   let p=props.product;
   return (
     <div>
       <img
-        src={process.env.PUBLIC_URL + `./images/shoes${props[i].id + 1}.jpg`}
+        src={process.env.PUBLIC_URL + `./images/shoes${p[i].id + 1}.jpg`}
         width="80%"
       ></img>
-      <h4>{props[i].title}</h4>
-      <p>{props[i].content}</p>
+      <h4>{p[i].title}</h4>
+      <p>{p[i].content}</p>
     </div>
   );
 }

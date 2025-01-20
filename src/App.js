@@ -7,6 +7,7 @@ import Col from "react-bootstrap/Col";
 import myData from "./data/test-data";
 import data from "./data/shoes-data";
 import { useState } from "react";
+import Product from "./component/product";
 
 function App() {
   const [product, setProduct] = useState(data);
@@ -26,11 +27,18 @@ function App() {
 
       <Container>
         <Row className="justify-content-md-center">
+          {product.map((x, index) => {
+            return(
+            <Col>
+              <Product product={product} index={index}/>
+            </Col>
+            );
+          })}
           {/* <img
               src="https://zzzmini.github.io/images/shoes1.jpg"
               width={"80%"}
             ></img> */}
-          {product.map((x, y) => {
+          {/* {product.map((x, y) => {
             return (
               <Col>
                 <img
@@ -44,15 +52,7 @@ function App() {
                 <p>{product[y].content}</p>
               </Col>
             );
-          })}
-          {product.map((x, index) => {
-            return(
-            <Col>
-              <Product product={product} index={index}/>
-            </Col>
-
-            );
-          })}
+          })} */}
         </Row>
       </Container>
     </div>
