@@ -6,15 +6,27 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import myData from "./data/test-data";
 import data from "./data/shoes-data";
-import { useState } from "react";
+import { useEffect,useState } from "react";
 import Product from "./component/product";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import DetailPage from "./pages/DetailPage";
 import AboutPage from "./pages/AboutPage";
 import Event from "./pages/Event/Event";
+import CartPage from "./pages/CartPage";
+import axios from "axios";
 
 function App() {
-  const [product, setProduct] = useState(data);
+  const [product, setProduct] = useState([]);
+  useEffect(()=>{
+    axios.get('https://seegeegaja.github.io/js/shoes_data.json')
+    .then((result)=>{
+      console.log(result.data)
+      let temp = [...result.data];
+      setProduct([...temp])
+    })
+    .catch("요청 실패")
+  },[])
+
   let navigate = useNavigate();
   return (
     <div className="App">
@@ -74,10 +86,15 @@ function App() {
               <DetailPage product={product} />
             </div>
           }
-        >
-
-        </Route>
-        <Route path="/cart" element={<div>장바구니 페이지</div>} />
+        ></Route>
+        <Route
+          path="/cart"
+          element={
+            <div>
+              <CartPage />
+            </div>
+          }
+        />
         <Route
           path="/about"
           element={
@@ -114,34 +131,54 @@ function App() {
         <Row className="justify-content-md-center">
           {product.map((x, index) => {
             return (
-              <Col>
+              <Col className="box" md="4" sm="4" xs="4">
                 <Product product={product} index={index} />
               </Col>
             );
           })}
-          {/* <img
-              src="https://zzzmini.github.io/images/shoes1.jpg"
-              width={"80%"}
-            ></img> */}
-          {/* {product.map((x, y) => {
-            return (
-              <Col>
-                <img
-                  src={
-                    process.env.PUBLIC_URL +
-                    `./images/shoes${product[y].id + 1}.jpg`
-                  }
-                  width="80%"
-                ></img>
-                <h4>{product[y].title}</h4>
-                <p>{product[y].content}</p>
-              </Col>
-            );
-          })} */}
         </Row>
+        {/* <button
+          onClick={() => {
+            axios
+            .get('https://seegeegaja.github.io/js/shoes_data.json')
+            .then((result)=>{
+              //요청 성공시 처리할 곳
+              
+              console.log(result.data)
+              let temp = [...product , ...result.data];
+              console.log(temp);
+              setProduct([...temp]);
+            })
+            .catch(()=>{
+              //요청 실패시 처리할곳
+              console.log("실패함")
+            });
+          }}
+          >
+          데이터 가져오기
+        </button> */}
       </Container>
     </div>
   );
 }
 
+{/* <img
+    src="https://zzzmini.github.io/images/shoes1.jpg"
+    width={"80%"}
+  ></img> */}
+{/* {product.map((x, y) => {
+  return (
+    <Col>
+      <img
+        src={
+          process.env.PUBLIC_URL +
+          `./images/shoes${product[y].id + 1}.jpg`
+        }
+        width="80%"
+      ></img>
+      <h4>{product[y].title}</h4>
+      <p>{product[y].content}</p>
+    </Col>
+  );
+})} */}
 export default App;

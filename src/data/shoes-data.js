@@ -1,21 +1,30 @@
-export default 
-[
-  {
-    id : 0,
-    title : "White and Black",
-    content : "Born in France",
-    price : 120000,
-  },
-  {
-    id : 1,
-    title : "Red Knit",
-    content : "Born in Seoul",
-    price : 110000,
-  },
-  {
-    id : 2,
-    title : "Grey Yoedan",
-    content : "Born in the States",
-    price : 130000,
-  },
-]
+// import axios from "axios";
+// import { useEffect, useState } from "react";
+
+// export default product;
+
+//   let [product, setProduct] = useState([]);
+
+//   useEffect(()=>{
+//     axios.get('https://seegeegaja.github.io/js/shoes_data.json')
+//     .then((result)=>{
+//       setProduct( [...result.data]);
+  
+//     })
+//     .catch("요청 실패")
+//   },[product])
+  
+
+// // useEffect의 구조
+//   // useEffect(()=>{
+//     // second
+//   // }, 몇초-first)
+//   // ,{}--third }) ; --[]만 비워두면
+//   //얘는 프로그램 시작할 때 딱 한번만 실행함
+//   //2초 후에 alert스테이트를 펄스로 변경
+//   // useEffect(()=>{
+//   //   setTimeout(()=>{
+//   //     setAlert(false)
+//   //     console.log(1)
+//   //   }, 2000)
+//   // },)
