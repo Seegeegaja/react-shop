@@ -10,7 +10,7 @@ function Product(props) {
       <img
         src={process.env.PUBLIC_URL + `./images/shoes${p[i].id+1}.jpg`}
         onClick={()=>{
-          navigate(`/detail/${i}`)
+          navigate(`/main/${i}`)
         }}
         width="80%"
       ></img>

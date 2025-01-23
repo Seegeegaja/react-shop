@@ -66,6 +66,7 @@ function Detail(props) {
 
   return (
     <div className="container">
+      
       <div className="row">
         <div className="col-md-6">
           <img
@@ -135,6 +136,7 @@ function Detail(props) {
           </Tab>
         </Tabs>
       </div>
+        
     </div>
   );
 }

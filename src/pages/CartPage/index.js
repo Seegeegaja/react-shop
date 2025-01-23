@@ -1,24 +1,47 @@
 import { useEffect, useState } from "react";
+import Table from "react-bootstrap/Table";
+import { useSelector } from "react-redux";
 
-function CartPage (){
-  let [count , setCount] = useState(0)
-  //해당하는 컴포넌트가 로딩이 되기전에 먼저 실행되는것 useEffect
-  useEffect(()=>{
-    // for(let i = 0; i<1000; i++){
-    //   console.log(i);
-    // }
-    console.log('안녕 난 useEffect Mounted 야 반가워 ')
-  })
-  
-  
+function CartPage() {
+  let userName = useSelector((state) => {
+    return state.userName;
+  });
+  let productStock = useSelector((state) => {
+    return state.productStock;
+  });
+  let cartData = useSelector((state) => {
+    return state.cartData;
+  });
+
+  console.log(userName);
+  console.log(productStock);
+  console.log(cartData);
   return (
     <div>
-      <h3>CartPage</h3>
-      <button onClick={()=>{
-        setCount(count+1)
-      }}>눌러</button>
-      <span>{count}</span>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>상품명</th>
+            <th>수량</th>
+            <th>변경하기</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cartData.map((x) => {
+            return (
+              <tr key={x.id}>
+                <td>{(x.id)+1}</td>
+                <td>{x.title}</td>
+                <td>{x.count}</td>
+                <td>단추</td>
+              </tr>
+            );
+          })}
+          
+        </tbody>
+      </Table>
     </div>
-  )
+  );
 }
 export default CartPage;

@@ -7,13 +7,13 @@ import Col from "react-bootstrap/Col";
 import myData from "./data/test-data";
 import data from "./data/shoes-data";
 import { useEffect,useState } from "react";
-import Product from "./component/product";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import DetailPage from "./pages/DetailPage";
 import AboutPage from "./pages/AboutPage";
 import Event from "./pages/Event/Event";
 import CartPage from "./pages/CartPage";
 import axios from "axios";
+import MainPage from "./pages/MainPage";
 
 function App() {
   const [product, setProduct] = useState([]);
@@ -32,11 +32,11 @@ function App() {
     <div className="App">
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#home">ShoeShop</Navbar.Brand>
+          <Navbar.Brand href="/">ShoeShop</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link
               onClick={() => {
-                navigate("/");
+                navigate("/main");
               }}
             >
               {/* <Link to={"/"}>Home</Link> */}
@@ -77,7 +77,16 @@ function App() {
 
       {/* Router처리 */}
       <Routes>
-        <Route path="/" element={<div>메인페이지</div>} />
+        <Route path="/main/" element={<div><MainPage product={product}/></div>}  >
+        <Route
+          path=":id"
+          element={
+            <div>
+              <DetailPage product={product} />
+            </div>
+          }
+        ></Route>
+        </Route>
         <Route index element={<div>홈...</div>} />
         <Route
           path="/detail/:id"
@@ -127,40 +136,30 @@ function App() {
         />
       </Routes>
 
-      <Container>
-        <Row className="justify-content-md-center">
-          {product.map((x, index) => {
-            return (
-              <Col className="box" md="4" sm="4" xs="4">
-                <Product product={product} index={index} />
-              </Col>
-            );
-          })}
-        </Row>
-        {/* <button
-          onClick={() => {
-            axios
-            .get('https://seegeegaja.github.io/js/shoes_data.json')
-            .then((result)=>{
-              //요청 성공시 처리할 곳
-              
-              console.log(result.data)
-              let temp = [...product , ...result.data];
-              console.log(temp);
-              setProduct([...temp]);
-            })
-            .catch(()=>{
-              //요청 실패시 처리할곳
-              console.log("실패함")
-            });
-          }}
-          >
-          데이터 가져오기
-        </button> */}
-      </Container>
+      
     </div>
   );
 }
+{/* <button
+  onClick={() => {
+    axios
+    .get('https://seegeegaja.github.io/js/shoes_data.json')
+    .then((result)=>{
+      //요청 성공시 처리할 곳
+      
+      console.log(result.data)
+      let temp = [...product , ...result.data];
+      console.log(temp);
+      setProduct([...temp]);
+    })
+    .catch(()=>{
+      //요청 실패시 처리할곳
+      console.log("실패함")
+    });
+  }}
+  >
+  데이터 가져오기
+</button> */}
 
 {/* <img
     src="https://zzzmini.github.io/images/shoes1.jpg"
