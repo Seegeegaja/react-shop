@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {  changeUserName } from "../../store";
+import {  changeGroup,addage,pluse,minus } from "../../store";
 
 function CartPage() {
   let userName = useSelector((state) => {
@@ -13,11 +15,39 @@ function CartPage() {
     return state.cartData;
   });
 
+
   console.log(userName);
   console.log(productStock);
   console.log(cartData);
+  //스토어의 있는 변경함수 호출
+  let dispatcher = useDispatch();
+  let loginedUser = useSelector((state) => {
+    return state.loginedUser;
+  });
+  console.log(loginedUser)
+
+
+  let imsiData = useSelector((state) => {
+    return state.imsiData;
+  });
+  console.log(imsiData)
+
+
   return (
     <div>
+      {/* <h4>{loginedUser}</h4>
+      <button
+        onClick={() => {
+          dispatcher(changeUserName());
+        }}
+      >
+        유저이름 변경
+      </button>{imsiData.name} : {imsiData.groupName}<button onClick={()=>{
+        dispatcher(changeGroup());
+      }}>체인지</button><span onClick={()=>{
+        dispatcher(addage(3))
+      }}>➕</span>{imsiData.age} */}
+      <h4>{loginedUser}님의 장바구니</h4>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -28,17 +58,17 @@ function CartPage() {
           </tr>
         </thead>
         <tbody>
-          {cartData.map((x) => {
+          {cartData.map((x,y) => {
             return (
               <tr key={x.id}>
-                <td>{(x.id)+1}</td>
+                <td>{x.id + 1}</td>
                 <td>{x.title}</td>
-                <td>{x.count}</td>
+                <td>{x.count}<span onClick={()=>{dispatcher(pluse(x.id))}}>➕</span>
+                <span onClick={()=>{dispatcher(minus(x.id))}}>➖</span></td>
                 <td>단추</td>
               </tr>
             );
           })}
-          
         </tbody>
       </Table>
     </div>
