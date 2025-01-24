@@ -14,13 +14,19 @@ import Event from "./pages/Event/Event";
 import CartPage from "./pages/CartPage";
 import axios from "axios";
 import MainPage from "./pages/MainPage";
+import RecentPage from "./pages/RecentPage";
 
 function App() {
+  //로컬 스토리지에 초기 설정
+  // useEffect(()=>{
+  //   localStorage.setItem('recent',JSON.stringify([]))
+  // },[])
+
+
   const [product, setProduct] = useState([]);
   useEffect(()=>{
     axios.get('https://seegeegaja.github.io/js/shoes_data.json')
     .then((result)=>{
-      console.log(result.data)
       let temp = [...result.data];
       setProduct([...temp])
     })
@@ -28,6 +34,10 @@ function App() {
   },[])
 
   let navigate = useNavigate();
+  // localStorage.setItem('data', JSON.stringify(product))
+  // let outData = localStorage.getItem('data');
+  // console.log(JSON.parse(outData))
+
   return (
     <div className="App">
       <Navbar bg="dark" data-bs-theme="dark">
@@ -35,6 +45,7 @@ function App() {
           <Navbar.Brand href="/">ShoeShop</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link onClick={() => {navigate("/main"); }}> Home</Nav.Link>
+            <Nav.Link onClick={() => { navigate("/recent"); }}> 최근 본 상품</Nav.Link>
             <Nav.Link onClick={() => { navigate("/cart"); }} >Cart</Nav.Link>
             <Nav.Link onClick={() => { navigate("/about"); }} > About </Nav.Link>
             <Nav.Link onClick={() => { navigate("/event"); }}> Event</Nav.Link>
@@ -61,7 +72,9 @@ function App() {
           <Route path="one" element={<div>첫 주문시 양배추즙 서비스</div>} />
           <Route path="two" element={<div>생일기념쿠폰</div>} />
         </Route>
+        <Route path="/recent" element={<div><RecentPage product={product}/></div>}></Route>
         <Route path="*" element={<div> <h4>Page Not Found 404 error</h4> </div>}/>
+
       </Routes>
 
       
