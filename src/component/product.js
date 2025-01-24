@@ -5,8 +5,10 @@ function Product(props) {
   let i=props.index;
   let p=props.product;
   let navigate = useNavigate();
+  console.log('process.env.PUBLIC_URL : ' , process.env.PUBLIC_URL)
   return (
     <div >
+      
       <img
         src={process.env.PUBLIC_URL + `./images/shoes${p[i].id+1}.jpg`}
         onClick={()=>{
@@ -16,6 +18,7 @@ function Product(props) {
       ></img>
       <h4>{p[i].title}</h4>
       <p>{p[i].content}</p>
+      <p>{Intl.NumberFormat().format(p[i].price)}</p>
     </div>
   );
 }

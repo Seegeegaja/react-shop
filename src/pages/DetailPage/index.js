@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { addproduct } from "../../store";
+import { useNavigate } from "react-router-dom";
 
 function Detail(props) {
   const [key, setKey] = useState("home");
@@ -13,22 +16,24 @@ function Detail(props) {
   let shoes = props.product[id];
   let strPrice = shoes.price.toLocaleString("ko-KR");
   let i = parseInt(id) + 1;
-  let [review , setReview] = useState([])
+  let [review, setReview] = useState([]);
+  let dispatcher = useDispatch();
+  let navigate = useNavigate();
+  let cartData = useSelector((state) => {
+    return state.cartData;
+  });
 
-  
-  useEffect(()=>{
-    axios.get('https://zzzmini.github.io/js/shoesReview.json')
-    .then((result)=>{
-      console.log(result.data)
-      let temp = [...result.data]
-      setReview(temp);
+  useEffect(() => {
+    axios
+      .get("https://zzzmini.github.io/js/shoesReview.json")
+      .then((result) => {
+        console.log(result.data);
+        let temp = [...result.data];
+        setReview(temp);
+      })
+      .catch("asd");
+  }, []);
 
-    })
-    .catch('asd')
-  
-  },[])
-  
-   
   // useEffect의 구조
   // useEffect(()=>{
   // second
@@ -44,7 +49,7 @@ function Detail(props) {
       clearTimeout(myTimer);
     };
   }, []);
-  
+
   // useEffect(()=>{
   //   //호출시 실행되는곳
   //   console.log("렌더링 될때마다 실행")
@@ -63,10 +68,10 @@ function Detail(props) {
   //   Navigate(-1);
   //   return null;
   // }
+  console.log(props.product[id]);
 
   return (
     <div className="container">
-      
       <div className="row">
         <div className="col-md-6">
           <img
@@ -78,8 +83,16 @@ function Detail(props) {
         <div className="col-md-6">
           <h4 className="pt-5">{props.product[id].title}</h4>
           <p>{props.product[id].content}</p>
-          <p>{strPrice}</p>
-          <button className="btn btn-danger">주문하기</button>
+          <p>{Intl.NumberFormat().format(props.product[id].price)}</p>
+          <button
+            className="btn btn-danger"
+            onClick={() => {
+              dispatcher(addproduct(shoes));
+              navigate('/cart');
+            }}
+          >
+            주문하기
+          </button>
         </div>
         <Tabs
           id="controlled-tab-example"
@@ -101,24 +114,24 @@ function Detail(props) {
               </p>
             </div>
           </Tab>
-          <Tab eventKey="profile" title="리뷰(4.5 ★★★★☆)" >
+          <Tab eventKey="profile" title="리뷰(4.5 ★★★★☆)">
             <div>
-              {review.length > 0 ? 
-              (review
-                .filter((item)=> 
-                      item.productId === parseInt(id)+1)
-                .map((item)=> ( 
-                <div key = {item.reviewId} style={{marginBottom:"10px"}}>
-                  <h5>{item.title}</h5>
-                  <p>{item.review}</p>
-                  <p>평점 : {item.point}★</p>
-                  <hr></hr>
-                </div>))
-              ):(<p></p>)}
+              {review.length > 0 ? (
+                review
+                  .filter((item) => item.productId === parseInt(id) + 1)
+                  .map((item) => (
+                    <div key={item.reviewId} style={{ marginBottom: "10px" }}>
+                      <h5>{item.title}</h5>
+                      <p>{item.review}</p>
+                      <p>평점 : {item.point}★</p>
+                      <hr></hr>
+                    </div>
+                  ))
+              ) : (
+                <p></p>
+              )}
             </div>
             {review.forEach}
-            
-            
           </Tab>
           <Tab eventKey="contact" title="추가 정보">
             <div>
@@ -136,7 +149,6 @@ function Detail(props) {
           </Tab>
         </Tabs>
       </div>
-        
     </div>
   );
 }

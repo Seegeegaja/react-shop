@@ -34,106 +34,34 @@ function App() {
         <Container>
           <Navbar.Brand href="/">ShoeShop</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link
-              onClick={() => {
-                navigate("/main");
-              }}
-            >
-              {/* <Link to={"/"}>Home</Link> */}
-              Home
-            </Nav.Link>
-            <Nav.Link
-              onClick={() => {
-                navigate("/cart");
-              }}
-            >
-              Cart
-            </Nav.Link>
-            <Nav.Link
-              onClick={() => {
-                navigate("/about");
-              }}
-            >
-              {/* <Link to={"/"}>Home</Link> */}
-              About
-            </Nav.Link>
-            <Nav.Link
-              onClick={() => {
-                navigate("/event");
-              }}
-            >
-              Event
-            </Nav.Link>
+            <Nav.Link onClick={() => {navigate("/main"); }}> Home</Nav.Link>
+            <Nav.Link onClick={() => { navigate("/cart"); }} >Cart</Nav.Link>
+            <Nav.Link onClick={() => { navigate("/about"); }} > About </Nav.Link>
+            <Nav.Link onClick={() => { navigate("/event"); }}> Event</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
+              {/* <Link to={"/"}>Home</Link> */}
 
-      <div
-        className="main-bg"
-        onClick={() => {
-          navigate("/detail");
-        }}
-      ></div>
+      <div className="main-bg" onClick={() => { navigate("/detail");}}></div>
 
       {/* Router처리 */}
       <Routes>
         <Route path="/main/" element={<div><MainPage product={product}/></div>}  >
-        <Route
-          path=":id"
-          element={
-            <div>
-              <DetailPage product={product} />
-            </div>
-          }
-        ></Route>
+         <Route path=":id" element={ <div> <DetailPage product={product} /> </div> } ></Route>
         </Route>
         <Route index element={<div>홈...</div>} />
-        <Route
-          path="/detail/:id"
-          element={
-            <div>
-              <DetailPage product={product} />
-            </div>
-          }
-        ></Route>
-        <Route
-          path="/cart"
-          element={
-            <div>
-              <CartPage />
-            </div>
-          }
-        />
-        <Route
-          path="/about"
-          element={
-            <div>
-              <AboutPage />
-            </div>
-          }
-        >
+        <Route path="/detail/:id"element={ <div> <DetailPage product={product} /> </div> } ></Route>
+        <Route path="/cart" element={ <div> <CartPage /> </div> }/>
+        <Route path="/about" element={<div> <AboutPage /></div>}>
           <Route path="member" element={<div>직원 소개 페이지</div>} />
           <Route path="location" element={<div>길안내 페이지</div>} />
         </Route>
-        <Route
-          path="/event"
-          element={
-            <div>
-              <Event />
-            </div>
-          }
-        >
+        <Route path="/event" element={ <div> <Event /> </div> }>
           <Route path="one" element={<div>첫 주문시 양배추즙 서비스</div>} />
           <Route path="two" element={<div>생일기념쿠폰</div>} />
         </Route>
-        <Route
-          path="*"
-          element={
-            <div>
-              <h4>Page Not Found 404 error</h4>
-            </div>
-          }
-        />
+        <Route path="*" element={<div> <h4>Page Not Found 404 error</h4> </div>}/>
       </Routes>
 
       

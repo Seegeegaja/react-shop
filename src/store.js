@@ -1,28 +1,28 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { useEffect } from "react";
+import { act, useEffect } from "react";
 
 //configure =환경
 //createSlice == useState 랑 비슷한 역할
 //initialState 초기값
 let imsiData = createSlice({
-  name : 'imsiData',
-  initialState : {
-    name : '장원영',
-    groupName : '아이브',
+  name: "imsiData",
+  initialState: {
+    name: "장원영",
+    groupName: "아이브",
     age: 20,
   },
-  reducers : {
-    changeGroup(state){
-      state.groupName = '아이브그룹'
+  reducers: {
+    changeGroup(state) {
+      state.groupName = "아이브그룹";
     },
     //state는 원래의 값, action은 저쪽에서 넘어온 값
-    //patload 화물,택배
-    addage(state , action){
+    //payload 화물,택배
+    addage(state, action) {
       state.age = state.age + action.payload;
     },
-  }
-})
+  },
+});
 
 let userName = createSlice({
   name: "userName",
@@ -35,25 +35,50 @@ let productStock = createSlice({
 let cartData = createSlice({
   name: "cartData",
   initialState: [
-    { id: 0, title: "White and Black", count: 2 },
-    { id: 2, title: "Red Knit", count: 1 },
+    { id: 0, title: "White and Black", count: 2, price: 120000 },
+    { id: 1, title: "Red Knit", count: 1, price: 120000 },
   ],
   reducers: {
-    pluse(state , action){
-      state.map((x)=>{
-        if(x.id == action.payload){
-          x.count++
+    pluse(state, action) {
+      state.map((x) => {
+        if (x.id == action.payload) {
+          x.count++;
         }
-      })
+      });
     },
-    minus(state , action){
-      state.map((x)=>{
-        if(x.id == action.payload && x.count >0){
-          x.count--
+    minus(state, action) {
+      state.map((x) => {
+        if (x.id == action.payload && x.count > 0) {
+          x.count--;
         }
-      })
-    }
-  }
+      });
+    },
+    addproduct(state, action) {
+      const item = state.find((x) => x.id == action.payload.id);
+      if (item) {
+        item.count += 1;
+      } else {
+        state.push({ ...action.payload, count: 1 });
+      }
+    },
+    deletecart(state, action) {
+      return state.filter((x) => x.id !== action.payload);
+    },
+    descCart(state) {
+      state.sort((x, y) => {
+        if (x.title > y.title) return 1;
+        if (x.title < y.title) return -1;
+        return 0;
+      });
+    },
+    ascCart(state) {
+      state.sort((x, y) => {
+        if (x.title > y.title) return -1;
+        if (x.title < y.title) return 1;
+        return 0;
+      });
+    },
+  },
 });
 let loginedUser = createSlice({
   name: "loginedUser",
@@ -73,10 +98,11 @@ export default configureStore({
     productStock: productStock.reducer,
     cartData: cartData.reducer,
     loginedUser: loginedUser.reducer,
-    imsiData : imsiData.reducer,
+    imsiData: imsiData.reducer,
   },
 });
 export let { changeUserName } = loginedUser.actions;
 export let { changeGroup } = imsiData.actions;
 export let { addage } = imsiData.actions;
-export let { pluse ,minus } = cartData.actions;
+export let { pluse, minus, addproduct, deletecart, descCart, ascCart } =
+  cartData.actions;
