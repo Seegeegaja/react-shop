@@ -22,13 +22,13 @@ function RecentPage(props) {
       <Row>
         {recent.map((x, y)=>{
           return(
-          <Col xs={6} md={4}>
+          <Col xs={6} md={4} key={y}>
             <Card style={{ width: "18rem" }}>
-              <Card.Img variant="top" src={`${process.env.PUBLIC_URL} /images/shoes${y+1}.jpg`} />
+              <Card.Img variant="top" src={`${process.env.PUBLIC_URL} /images/shoes${x+1}.jpg`} />
               <Card.Body>
-                <Card.Title>{p[y].title}</Card.Title>
+                <Card.Title>{p[x].title}</Card.Title>
                 <Card.Text>
-                  {p[y].content}
+                  {p[x].content}
                 </Card.Text>
                 <Button variant="primary" onClick={()=>{
                   navigate(`/main/${x}`)
