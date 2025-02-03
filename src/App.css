@@ -7,3 +7,15 @@
   background-size: cover;
   background-position: center;
 }
+.userInfoArea{
+  color: white;
+  display: flex;
+  align-items: center;
+}
+.userImage{
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  display: block;
+  margin-left: 10px;
+}

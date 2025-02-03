@@ -15,6 +15,9 @@ import CartPage from "./pages/CartPage";
 import axios from "axios";
 import MainPage from "./pages/MainPage";
 import RecentPage from "./pages/RecentPage";
+import { getAuth, signInWithPopup, GoogleAuthProvider,  } from "firebase/auth";
+// 구글 로그인 상태 여부를 파악해주는 기능
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 function App() {
   //로컬 스토리지에 초기 설정
@@ -22,8 +25,25 @@ function App() {
   //   localStorage.setItem('recent',JSON.stringify([]))
   // },[])
 
-
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
+  // 구글 로그인 상태저장 스테이트
+  const [userInfo, setUserInfo] = useState(null);
+  let navigate = useNavigate();
   const [product, setProduct] = useState([]);
+
+
+  useEffect(()=>{
+    onAuthStateChanged(auth , (user)=>{
+      if(user){
+        setUserInfo(user)
+        console.log("====login success : " , userInfo)
+
+      }else{
+        console.log("=====logout :" , userInfo)
+      }
+    })
+  }, [auth, navigate, userInfo])
   useEffect(()=>{
     axios.get('https://seegeegaja.github.io/js/shoes_data.json')
     .then((result)=>{
@@ -33,10 +53,26 @@ function App() {
     .catch("요청 실패")
   },[])
 
-  let navigate = useNavigate();
   // localStorage.setItem('data', JSON.stringify(product))
   // let outData = localStorage.getItem('data');
   // console.log(JSON.parse(outData))
+  function friebaseLogin(){
+    signInWithPopup(auth, provider)
+     .then((result) => {})
+     .catch((error) => {
+     console.log(error)
+    });
+  }
+  function firebaseLogout(){
+    signOut(auth).then(() => {
+     // Sign-out successful.
+     setUserInfo(null);
+     navigate("/");
+    }).catch((error) => {
+     // An error happened.
+     console.log(error)
+    });
+  }
 
   return (
     <div className="App">
@@ -44,11 +80,24 @@ function App() {
         <Container>
           <Navbar.Brand href="/">ShoeShop</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link onClick={() => {navigate("/main"); }}> Home</Nav.Link>
-            <Nav.Link onClick={() => { navigate("/recent"); }}> 최근 본 상품</Nav.Link>
-            <Nav.Link onClick={() => { navigate("/cart"); }} >Cart</Nav.Link>
+            <Nav.Link onClick={() => { navigate("/main"); }}> Home</Nav.Link>
+            <Nav.Link onClick={() => { navigate("/recent"); }}> Recent</Nav.Link>
+            {
+              userInfo === null ? null : <Nav.Link onClick={() => { navigate("/cart"); }} >Cart</Nav.Link>
+            }
             <Nav.Link onClick={() => { navigate("/about"); }} > About </Nav.Link>
             <Nav.Link onClick={() => { navigate("/event"); }}> Event</Nav.Link>
+          </Nav>
+          <Nav>
+            {
+              userInfo ===null ? 
+              (<Nav.Link onClick={ friebaseLogin }>Login</Nav.Link> ) :
+              <div className="userInfoArea">
+                <span>{userInfo.displayName}</span>
+                <img src={userInfo.photoURL} className="userImage"></img>
+                <Nav.Link onClick={ firebaseLogout }>Logout</Nav.Link> 
+              </div>
+            }
           </Nav>
         </Container>
       </Navbar>
